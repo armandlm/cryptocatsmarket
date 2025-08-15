@@ -13,6 +13,8 @@
     "@reown/appkit": "^1.7.19",
     "@reown/appkit-adapter-wagmi": "^1.7.19",
     "datatables.net": "^2.3.2",
+    "datatables.net-responsive": "^3.0.5",
+    "datatables.net-responsive-dt": "^3.0.5",
     "jquery": "^3.7.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

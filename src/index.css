@@ -66,3 +66,25 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+
+
+  table#cats-datatable img.cat-image {
+    width: 32px;
+  }
+
+  table#cats-datatable td,
+  table#cats-datatable th {
+    padding: 0.25rem;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  table#cats-datatable{
+    font-size:0.4 rem;
+    padding: 0.25rem;
+    white-space: nowrap;
+  }
+}

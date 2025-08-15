@@ -3,12 +3,32 @@ import { formatEther } from 'viem'
 import { useEffect, useRef, useState } from 'react'
 import $ from 'jquery'
 import 'datatables.net'
+import 'datatables.net-responsive'
+import 'datatables.net-responsive-dt'
 
-const CRYPTOCATS_V1_ABI =[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"totalSupply","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"catNoLongerForSale","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"catIndexToAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"_totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"releaseCatIndexUpperBound","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_releaseId","type":"uint32"},{"name":"catPrice","type":"uint256"}],"name":"updateCatReleasePrice","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"getContractOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"getCat","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"imageHash","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"getCatPrice","outputs":[{"name":"catPrice","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"attributeType","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"},{"name":"minSalePriceInWei","type":"uint256"},{"name":"toAddress","type":"address"}],"name":"offerCatForSaleToAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"standard","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupplyIsLocked","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"},{"name":"attrIndex","type":"uint256"},{"name":"attrValue","type":"string"}],"name":"setCatAttributeValue","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint32"}],"name":"catReleaseToPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_releaseId","type":"uint32"},{"name":"numberOfCatsAdded","type":"uint256"},{"name":"catPrice","type":"uint256"},{"name":"newImageHash","type":"string"}],"name":"releaseCats","outputs":[{"name":"newTotalSupply","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"previousContractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"getCatRelease","outputs":[{"name":"","type":"uint32"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"catsForSale","outputs":[{"name":"isForSale","type":"bool"},{"name":"catIndex","type":"uint256"},{"name":"seller","type":"address"},{"name":"minPrice","type":"uint256"},{"name":"sellOnlyTo","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"allCatsAssigned","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"contractVersion","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"startIndex","type":"uint256"},{"name":"endIndex","type":"uint256"}],"name":"migrateCatOwnersFromPreviousContract","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"attributeIndex","type":"uint256"},{"name":"descriptionText","type":"string"}],"name":"setAttributeType","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"currentReleaseCeiling","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"},{"name":"catPrice","type":"uint256"}],"name":"setCatPrice","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"getCatOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"buyCat","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"},{"name":"minSalePriceInWei","type":"uint256"}],"name":"offerCatForSale","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"catIndexToPriceException","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"catsRemainingToAssign","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"lockTotalSupply","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"pendingWithdrawals","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"catAttributes","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":true,"stateMutability":"payable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"catIndex","type":"uint256"}],"name":"CatTransfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"catIndex","type":"uint256"},{"indexed":false,"name":"minPrice","type":"uint256"},{"indexed":true,"name":"toAddress","type":"address"}],"name":"CatOffered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"catIndex","type":"uint256"},{"indexed":false,"name":"price","type":"uint256"},{"indexed":true,"name":"fromAddress","type":"address"},{"indexed":true,"name":"toAddress","type":"address"}],"name":"CatBought","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"catIndex","type":"uint256"}],"name":"CatNoLongerForSale","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"catIndex","type":"uint256"}],"name":"Assign","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"newCatsAdded","type":"uint256"},{"indexed":false,"name":"totalSupply","type":"uint256"},{"indexed":false,"name":"catPrice","type":"uint256"},{"indexed":false,"name":"newImageHash","type":"string"}],"name":"ReleaseUpdate","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"releaseId","type":"uint32"},{"indexed":false,"name":"catPrice","type":"uint256"}],"name":"UpdateReleasePrice","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"attributeNumber","type":"uint256"},{"indexed":true,"name":"ownerAddress","type":"address"},{"indexed":false,"name":"oldValue","type":"bytes32"},{"indexed":false,"name":"newValue","type":"bytes32"}],"name":"UpdateAttribute","type":"event"}]
+const CRYPTOCATS_ABI =[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"totalSupply","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"catNoLongerForSale","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"catIndexToAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"_totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"releaseCatIndexUpperBound","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_releaseId","type":"uint32"},{"name":"catPrice","type":"uint256"}],"name":"updateCatReleasePrice","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"getContractOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"getCat","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"imageHash","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"getCatPrice","outputs":[{"name":"catPrice","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"attributeType","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"},{"name":"minSalePriceInWei","type":"uint256"},{"name":"toAddress","type":"address"}],"name":"offerCatForSaleToAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"standard","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupplyIsLocked","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"},{"name":"attrIndex","type":"uint256"},{"name":"attrValue","type":"string"}],"name":"setCatAttributeValue","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint32"}],"name":"catReleaseToPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_releaseId","type":"uint32"},{"name":"numberOfCatsAdded","type":"uint256"},{"name":"catPrice","type":"uint256"},{"name":"newImageHash","type":"string"}],"name":"releaseCats","outputs":[{"name":"newTotalSupply","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"previousContractAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"getCatRelease","outputs":[{"name":"","type":"uint32"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"catsForSale","outputs":[{"name":"isForSale","type":"bool"},{"name":"catIndex","type":"uint256"},{"name":"seller","type":"address"},{"name":"minPrice","type":"uint256"},{"name":"sellOnlyTo","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"allCatsAssigned","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"contractVersion","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"startIndex","type":"uint256"},{"name":"endIndex","type":"uint256"}],"name":"migrateCatOwnersFromPreviousContract","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"attributeIndex","type":"uint256"},{"name":"descriptionText","type":"string"}],"name":"setAttributeType","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"currentReleaseCeiling","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"},{"name":"catPrice","type":"uint256"}],"name":"setCatPrice","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"getCatOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"}],"name":"buyCat","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"catIndex","type":"uint256"},{"name":"minSalePriceInWei","type":"uint256"}],"name":"offerCatForSale","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"catIndexToPriceException","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"catsRemainingToAssign","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"lockTotalSupply","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"pendingWithdrawals","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"catAttributes","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":true,"stateMutability":"payable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"catIndex","type":"uint256"}],"name":"CatTransfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"catIndex","type":"uint256"},{"indexed":false,"name":"minPrice","type":"uint256"},{"indexed":true,"name":"toAddress","type":"address"}],"name":"CatOffered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"catIndex","type":"uint256"},{"indexed":false,"name":"price","type":"uint256"},{"indexed":true,"name":"fromAddress","type":"address"},{"indexed":true,"name":"toAddress","type":"address"}],"name":"CatBought","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"catIndex","type":"uint256"}],"name":"CatNoLongerForSale","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"catIndex","type":"uint256"}],"name":"Assign","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"newCatsAdded","type":"uint256"},{"indexed":false,"name":"totalSupply","type":"uint256"},{"indexed":false,"name":"catPrice","type":"uint256"},{"indexed":false,"name":"newImageHash","type":"string"}],"name":"ReleaseUpdate","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"releaseId","type":"uint32"},{"indexed":false,"name":"catPrice","type":"uint256"}],"name":"UpdateReleasePrice","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"attributeNumber","type":"uint256"},{"indexed":true,"name":"ownerAddress","type":"address"},{"indexed":false,"name":"oldValue","type":"bytes32"},{"indexed":false,"name":"newValue","type":"bytes32"}],"name":"UpdateAttribute","type":"event"}]
 
-const CRYPTOCATS_V1_ADDRESS = '0x19c320b43744254ebdBcb1F1BD0e2a3dc08E01dc'
+const MARKET_V2_ABI = [
+  {
+    "inputs": [{"internalType": "uint256","name": "catIndex","type": "uint256"}],
+    "name": "bid",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "uint256","name": "catIndex","type": "uint256"},
+      {"internalType": "uint256","name": "minPrice","type": "uint256"}
+    ],
+    "name": "acceptBid",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
 
-export default function CryptoCatsTable({ cats }) {
+export default function CryptoCatsTable({ cats, contractAddress, bidContractAddress }) {
   const { address, isConnected } = useAccount()
   const containerRef = useRef(null)
   const [filter, setFilter] = useState('all')
@@ -31,7 +51,7 @@ export default function CryptoCatsTable({ cats }) {
 
     // Création manuelle de la table HTML
     const table = $(`
-      <table id="${tableId}" class="nes-table is-bordered is-centered display" style="width: 100%">
+      <table id="${tableId}" class="nes-table is-bordered is-centered display" style="width: 95%; margin: 0 auto;">
         <thead>
           <tr>
             <th>ID</th>
@@ -83,7 +103,7 @@ $(container).on('click', '.buy-cat', async function () {
     const cat = cats.find(c => c.id == catId)
     if (!cat) return
     try {
-      await buyCat(cat.id, cat.price, walletClient.data)
+      await buyCat(cat.id, cat.price, walletClient.data, contractAddress)
     } catch (err) {
       alert("Transaction failed: " + err.message)
     }
@@ -92,7 +112,7 @@ $(container).on('click', '.buy-cat', async function () {
   $(container).on('click', '.put-on-sale', async function () {
     const catId = $(this).data('cat-id')
     try {
-      await putOnSale(catId, walletClient.data)
+      await putOnSale(catId, walletClient.data, contractAddress)
     } catch (err) {
       alert("Failed to list for sale: " + err.message)
     }
@@ -101,7 +121,7 @@ $(container).on('click', '.buy-cat', async function () {
   $(container).on('click', '.update-price', async function () {
     const catId = $(this).data('cat-id')
     try {
-      await updatePrice(catId, walletClient.data)
+      await updatePrice(catId, walletClient.data, contractAddress)
     } catch (err) {
       alert("Failed to update price: " + err.message)
     }
@@ -110,7 +130,7 @@ $(container).on('click', '.buy-cat', async function () {
   $(container).on('click', '.remove-sale', async function () {
     const catId = $(this).data('cat-id')
     try {
-      await removeFromSale(catId, walletClient.data)
+      await removeFromSale(catId, walletClient.data, contractAddress)
     } catch (err) {
       alert("Failed to remove from sale: " + err.message)
     }
@@ -119,7 +139,7 @@ $(container).on('click', '.buy-cat', async function () {
   $(container).on('click', '.accept-bid', async function () {
     const catId = $(this).data('cat-id')
     try {
-      await acceptBid(catId, walletClient.data)
+      await acceptBid(catId, walletClient.data, bidContractAddress)
     } catch (err) {
       alert("Failed to accept bid: " + err.message)
     }
@@ -128,7 +148,7 @@ $(container).on('click', '.buy-cat', async function () {
   $(container).on('click', '.bid-on-cat', async function () {
     const catId = $(this).data('cat-id')
     try {
-      await bidOnCat(catId, walletClient.data)
+      await bidOnCat(catId, walletClient.data, bidContractAddress)
     } catch (err) {
       alert("Failed to bid: " + err.message)
     }
@@ -137,7 +157,7 @@ $(container).on('click', '.buy-cat', async function () {
     // Initialiser DataTables
     $(`#${tableId}`).DataTable({
       order: [[0, 'asc']],
-      pageLength: 1000
+      pageLength: 1000,
     })
 
     // Cleanup on unmount
@@ -148,7 +168,7 @@ $(container).on('click', '.buy-cat', async function () {
 
   return (
     <section className="nes-container with-title" style={{ padding: '1rem', margin: '1rem auto', maxWidth: 1200 }}>
-      <h2 className="title">All 625 CryptoCats</h2>
+      <h2 className="title">All 625 CryptoCats from {contractAddress}</h2>
 
       {isConnected && (
         <div style={{ marginBottom: '1rem' }}>
@@ -228,63 +248,90 @@ function renderActionButtonHTML(cat, address) {
   }
 
 
-  async function buyCat(catId, price, walletClient) {
+  async function buyCat(catId, price, walletClient, contractAddress) {
     await walletClient.writeContract({
-      address: CRYPTOCATS_V1_ADDRESS,
-      abi: CRYPTOCATS_V1_ABI,
+      address: contractAddress,
+      abi: CRYPTOCATS_ABI,
       functionName: 'buyCat',
       args: [BigInt(catId)],
       value: BigInt(price),
     })
     alert('Cat bought successfully!')
   }
+
   
-  async function putOnSale(catId, walletClient) {
+  async function putOnSale(catId, walletClient, contractAddress) {
     const price = prompt('Price in ETH:')
     if (!price) return
     const minSalePriceInWei = BigInt(parseFloat(price) * 1e18)
     await walletClient.writeContract({
-      address: CRYPTOCATS_V1_ADDRESS,
-      abi: CRYPTOCATS_V1_ABI,
+      address: contractAddress,
+      abi: CRYPTOCATS_ABI,
       functionName: 'offerCatForSale',
       args: [BigInt(catId), minSalePriceInWei],
     })
     alert('Cat listed!')
   }
   
-  async function updatePrice(catId, walletClient) {
+  async function updatePrice(catId, walletClient, contractAddress) {
     const newPrice = prompt('New price in ETH:')
     if (!newPrice) return
     const priceWei = BigInt(parseFloat(newPrice) * 1e18)
     await walletClient.writeContract({
-      address: CRYPTOCATS_V1_ADDRESS,
-      abi: CRYPTOCATS_V1_ABI,
+      address: contractAddress,
+      abi: CRYPTOCATS_ABI,
       functionName: 'setCatPrice',
       args: [BigInt(catId), priceWei],
     })
     alert('Price updated.')
   }
   
-  async function removeFromSale(catId, walletClient) {
+  async function removeFromSale(catId, walletClient, contractAddress) {
     await walletClient.writeContract({
-      address: CRYPTOCATS_V1_ADDRESS,
-      abi: CRYPTOCATS_V1_ABI,
+      address: contractAddress,
+      abi: CRYPTOCATS_ABI,
       functionName: 'catNoLongerForSale',
       args: [BigInt(catId)],
     })
     alert('Cat removed from sale.')
   }
   
-  async function acceptBid(catId, walletClient) {
-    // à implémenter selon la logique de V2 (contrat 0x952)
-    alert("Accept bid logic not yet implemented")
+  async function acceptBid(catId, walletClient, bidContractAddress) {
+    const minPrice = prompt('Minimum price to accept (in ETH):')
+    if (!minPrice) return
+  
+    const minPriceWei = BigInt(parseFloat(minPrice) * 1e18)
+  
+    try {
+      await walletClient.writeContract({
+        address: bidContractAddress,
+        abi: MARKET_V2_ABI,
+        functionName: 'acceptBid',
+        args: [BigInt(catId), minPriceWei],
+      })
+      alert('Bid accepted!')
+    } catch (err) {
+      alert('Failed to accept bid: ' + err.message)
+    }
   }
   
-  async function bidOnCat(catId, walletClient) {
+  async function bidOnCat(catId, walletClient, bidContractAddress) {
     const amount = prompt('Bid amount in ETH:')
     if (!amount) return
-    const bidValue = BigInt(parseFloat(amount) * 1e18)
-    // à appeler sur le contrat 0x952 avec ABI de bid
-    alert("Bid logic not yet implemented")
+  
+    const value = BigInt(parseFloat(amount) * 1e18)
+  
+    try {
+      await walletClient.writeContract({
+        address: bidContractAddress,
+        abi: MARKET_V2_ABI,
+        functionName: 'bid',
+        args: [BigInt(catId)],
+        value,
+      })
+      alert('Bid placed successfully!')
+    } catch (err) {
+      alert('Failed to place bid: ' + err.message)
+    }
   }
   
