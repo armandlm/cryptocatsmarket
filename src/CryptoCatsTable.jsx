@@ -158,6 +158,9 @@ $(container).on('click', '.buy-cat', async function () {
     $(`#${tableId}`).DataTable({
       order: [[0, 'asc']],
       pageLength: 1000,
+      lengthChange: false,
+      paging:false,
+      responsive:true,
     })
 
     // Cleanup on unmount
